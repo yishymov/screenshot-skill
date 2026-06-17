@@ -47,12 +47,12 @@ Save the returned path.
 🖥️ **Открыть:** `open /tmp/screenshot_<TS>.png`
 ```
 
-7. Give design feedback — cover all of these in order:
-   - **Первое впечатление** — общее ощущение, стиль, аудитория
-   - **Layout** — структура секций, иерархия, пропорции
-   - **Цвета** — палитра, контрасты, акценты
-   - **Типографика** — шрифты, размеры, читаемость
-   - **Слабые места** — что мешает, что теряется, что режет глаз
-   - **Топ-3 улучшения** — конкретные, приоритизированные
+7. Give design feedback in the user's language. Cover:
+   - **First impression** — overall feel, style, target audience
+   - **Layout** — section structure, hierarchy, proportions
+   - **Colors** — palette, contrast, accents
+   - **Typography** — fonts, sizes, readability
+   - **Weak points** — what hurts, what gets lost, what feels off
+   - **Top 3 improvements** — concrete, prioritized
 
    Keep feedback caveman-compressed if caveman mode is active.
