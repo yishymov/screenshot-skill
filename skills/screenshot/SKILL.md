@@ -7,18 +7,17 @@ argument-hint: "<url>"
 
 # Screenshot Skill
 
-Take a full-page screenshot of a URL and display it visually.
+Take a full-page screenshot of a URL, display it inline, and give design feedback.
 
 ## Requirements
 
-- Apify MCP connected (`https://mcp.apify.com`) — needs `mcp__claude_ai_claude_mcp_apify__call-actor` and `mcp__claude_ai_claude_mcp_apify__get-dataset-items` tools available.
-- Get a free Apify API key at https://apify.com and connect via Claude.ai → Settings → Integrations.
+- Apify MCP connected (`https://mcp.apify.com`)
 
 ## Steps
 
 1. Extract the URL from args or ask for it if missing.
 
-2. Call Apify actor `leadsbrary/screenshot-html-file-from-url` via MCP tool `mcp__claude_ai_claude_mcp_apify__call-actor` with:
+2. Call Apify actor `leadsbrary/screenshot-html-file-from-url` via `mcp__claude_ai_claude_mcp_apify__call-actor`:
 ```json
 {
   "urls": [{"url": "<URL>"}],
@@ -32,13 +31,28 @@ Take a full-page screenshot of a URL and display it visually.
 ```
 Set `waitSecs: 45`.
 
-3. Get dataset items via `mcp__claude_ai_claude_mcp_apify__get-dataset-items` using the `datasetId` from the run result. Extract `screenshotUrl`.
+3. Get dataset items via `mcp__claude_ai_claude_mcp_apify__get-dataset-items` using `datasetId` from the run result. Extract `screenshotUrl`.
 
-4. Download screenshot locally:
+4. Download screenshot — use exact timestamp to avoid collisions:
 ```bash
-curl -s "<screenshotUrl>" -o /tmp/screenshot_$(date +%s).png && echo /tmp/screenshot_$(date +%s).png
+TS=$(date +%s) && curl -s "<screenshotUrl>" -o /tmp/screenshot_$TS.png && echo "/tmp/screenshot_$TS.png"
+```
+Save the returned path.
+
+5. Display the image inline using the Read tool on the saved path.
+
+6. After the image, output this block exactly (fill in the path and domain):
+```
+📁 **Файл:** `/tmp/screenshot_<TS>.png`
+🖥️ **Открыть:** `open /tmp/screenshot_<TS>.png`
 ```
 
-5. Read and display the image using the Read tool on the downloaded `/tmp/screenshot_*.png` path.
+7. Give design feedback — cover all of these in order:
+   - **Первое впечатление** — общее ощущение, стиль, аудитория
+   - **Layout** — структура секций, иерархия, пропорции
+   - **Цвета** — палитра, контрасты, акценты
+   - **Типографика** — шрифты, размеры, читаемость
+   - **Слабые места** — что мешает, что теряется, что режет глаз
+   - **Топ-3 улучшения** — конкретные, приоритизированные
 
-6. After displaying: brief visual analysis — layout, colors, typography, key sections, overall quality. Keep concise.
+   Keep feedback caveman-compressed if caveman mode is active.
